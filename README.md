@@ -21,6 +21,14 @@ sudo docker run \
 -it methode-activemq:dev
 ```
 
-# Runtime setup on Amazon Linux
+# Setting up runtime on Amazon Linux
 
-`yum install -y docker git`
+```
+yum install -y docker git && service docker start`
+useradd -m jenkins
+mkdir /home/jenkins/.ssh
+cp /root/.ssh/authorized_keys /home/jenkins/.ssh/
+chown -R jenkins: /home/jenkins/.ssh/
+echo "jenkins ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/jenkins
+chmod 440 /etc/sudoers.d/jenkins
+``
