@@ -33,7 +33,7 @@ else
   # Add Jenkins user and related configuration
   useradd -m jenkins
   mkdir /home/jenkins/.ssh
-  echo ${PUB_KEY} /home/jenkins/.ssh/authorized_keys
+  echo ${PUB_KEY} > /home/jenkins/.ssh/authorized_keys
   chown -R jenkins: /home/jenkins/.ssh/
   echo "jenkins ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/jenkins
   chmod 440 /etc/sudoers.d/jenkins
