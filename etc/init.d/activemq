@@ -2,7 +2,7 @@
 #
 # Init script to manage ActiveMQ docker runtime
 #
-# chkconfig: - 80 20
+# chkconfig: 2345 80 20
 # description:  ActiveMQ as a docker runtime
 # processname: docker
 
