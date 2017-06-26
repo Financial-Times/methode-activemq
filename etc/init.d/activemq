@@ -1,0 +1,70 @@
+#!/bin/bash
+#
+# Init script to manage ActiveMQ docker runtime
+#
+# chkconfig: - 80 20
+# description:  ActiveMQ as a docker runtime
+# processname: docker
+
+DAEMON=docker
+DOCKER_IMAGE="methode-activemq:dev"
+DOCKER_STOP="stop"
+DOCKER_START="run -d \
+-p 1883:1883 \
+-p 5672:5672 \
+-p 80:8161 \
+-p 61613:61613 \
+-p 61614:61614 \
+-p 61616:61616 \
+-t ${DOCKER_IMAGE}"
+NAME=activemq
+PIDFILE=/var/run/${NAME}.pid
+
+getContainerId() {
+  ${DAEMON} ps | grep ${DOCKER_IMAGE} |  awk '{print $1}'
+}
+
+case "$1" in
+  start)
+  	echo "Starting $NAME..."
+  	PID="$(${DAEMON} ${DOCKER_START} > /dev/null 2>&1 & echo $!)"
+    if [[ -z $PID ]]; then
+        echo "Fail"
+        exit 1
+    else
+        echo ${PID} > ${PIDFILE}
+        echo "Running"
+    fi
+  ;;
+  status)
+    echo "Checking ${NAME}..."
+    CONTAINER_ID="$(getContainerId)"
+    if [[ ! -z "${CONTAINER_ID}" ]]; then
+      echo "${NAME} running, container ID ${CONTAINER_ID}"
+    else
+      echo "${NAME} not running"
+    fi
+  ;;
+  stop)
+    CONTAINER_ID="$(getContainerId)"
+    if [[ ! -z "${CONTAINER_ID}" ]]; then
+      echo "Stopping $NAME"
+      ${DAEMON} ${DOCKER_STOP}
+      PID=$(cat ${PIDFILE})
+    fi
+    if [[ -f ${PIDFILE} ]]; then
+        rm -f ${PIDFILE}
+    fi
+    echo "Stopped"
+  ;;
+
+  restart)
+    	$0 stop
+    	$0 start
+  ;;
+
+  *)
+          echo "Usage: $0 {status|start|stop|restart}"
+          exit 1
+  ;;
+esac
