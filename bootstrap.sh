@@ -26,6 +26,7 @@ else
   # Install packages for deployment unless already installed
   docker --version &> /dev/null || yum install -y docker | tee -a ${OUTPUT}
   git --version &> /dev/null || yum install -y git | tee -a ${OUTPUT}
+  yum update -y
 
   # Ensure Docker is running
   /sbin/service docker start
