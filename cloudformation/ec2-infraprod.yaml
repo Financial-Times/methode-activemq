@@ -66,15 +66,11 @@ Parameters:
   TagIpCode:
     Description: Tag detail for the ipCode
     Type: String
-    Default: P196
+    Default: P204
   TagDescription:
     Description: Instance description
     Type: String
     Default: ActiveMQ Broker for Methode Print Shapes
-  TagStopSchedule:
-    Description: Tag detail for the when the instance is to be powered off.
-    Type: String
-    Default: '{ "start": "0 9 * * 1-5", "stop": "55 18 * * *" }'
   InstanceType:
     Description: The type and size of the instance. Check documentation for recommended types.
     Type: String
@@ -130,7 +126,7 @@ Conditions:
     - Fn::Equals:
       - ''
       - Ref: InstanceKey
-      
+
 Resources:
   #auto-scaling groups
   AutoScalingGroup:
