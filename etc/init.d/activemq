@@ -33,6 +33,7 @@ case "$1" in
         exit 1
     else
         echo ${PID} > ${PIDFILE}
+        sleep 1
         echo "Running, PID ${PID}, container ID $(getContainerId)"
     fi
   ;;
