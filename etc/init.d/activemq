@@ -28,7 +28,7 @@ case "$1" in
   start)
   	echo "Starting $NAME..."
   	PID="$(${DAEMON} ${DOCKER_START} > /dev/null 2>&1 & echo $!)"
-    if [[ -z $PID ]]; then
+    if [[ -z ${PID} ]]; then
         echo "Fail"
         exit 1
     else
@@ -49,7 +49,7 @@ case "$1" in
     CONTAINER_ID="$(getContainerId)"
     if [[ ! -z "${CONTAINER_ID}" ]]; then
       echo "Stopping $NAME"
-      ${DAEMON} ${DOCKER_STOP}
+      ${DAEMON} ${DOCKER_STOP} ${CONTAINER_ID}
       PID=$(cat ${PIDFILE})
     fi
     if [[ -f ${PIDFILE} ]]; then
