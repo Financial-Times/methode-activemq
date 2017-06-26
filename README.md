@@ -3,23 +3,39 @@ Docker image to run ActiveMQ broker for Methode
 
 # Building image
 
-`sudo docker build -t methode-activemq:dev .`
+`docker build -t methode-activemq:dev .`
 
 # Launching image
 
 The following command starts ActiveMQ broker and creates port forwarding
-such as ActiveMQ WebConsole available at http://0.0.0.0:8161/
+such as ActiveMQ WebConsole available at http://0.0.0.0:80/
+
+## Background
 
 ```
-sudo docker run \
+docker run -d \
 -p 1883:1883 \
 -p 5672:5672 \
--p 8161:8161 \
+-p 80:8161 \
+-p 61613:61613 \
+-p 61614:61614 \
+-p 61616:61616 \
+-t methode-activemq:dev
+```
+
+## Foreground
+
+```
+docker run \
+-p 1883:1883 \
+-p 5672:5672 \
+-p 80:8161 \
 -p 61613:61613 \
 -p 61614:61614 \
 -p 61616:61616 \
 -it methode-activemq:dev
 ```
+
 
 # Setting up runtime on Amazon Linux
 
