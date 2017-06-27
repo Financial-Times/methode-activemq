@@ -52,6 +52,9 @@ case "$1" in
       echo "Stopping $NAME"
       ${DAEMON} ${DOCKER_STOP} ${CONTAINER_ID}
       PID=$(cat ${PIDFILE})
+    else
+      echo "Unable to query container ID. Exit 1."
+      exit 1
     fi
     if [[ -f ${PIDFILE} ]]; then
         rm -f ${PIDFILE}
