@@ -38,10 +38,10 @@ test -z "${ARGS[--help]}" || usage
 gitPull
 
 #  Checkout Git branch or tag if specified, -n option stands for non-zero
-test -n "${ARGS[--checkout]}" || git checkout ${ARGS[--checkout]}
+test -z "${ARGS[--checkout]}" && git checkout ${ARGS[--checkout]}
 
 #  Set Docker image:tag name default unless --image parameter was provided
-test -z "${ARGS[--tag]}" || ARGS[--tag]=${DEFAULT_TAG}
+test -z "${ARGS[--tag]}" && ARGS[--tag]=${DEFAULT_TAG}
 
 #  Build docker image
 info "Building docker image ${IMAGE_NAME}:${ARGS[--tag]}"
