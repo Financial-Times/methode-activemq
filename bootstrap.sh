@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+#  boothstrap.sh is run when EC2 instance is initialised. Script is triggered from instance UserData
+#  which set by Clooudformation tmeplate ./clooudformation/ec2-infraprod.yaml
+#
+#  copyright jussi.heinonen@ft.com, 27.06.2017
+
 OUTPUT="/var/log/bootstrap.log"
 ROOTDIR='/opt/methode'
 mkdir -p ${ROOTDIR}
@@ -23,19 +28,20 @@ else
   else
     echo "Skip tagging" | tee -a ${OUTPUT}
   fi
-  # Install packages for deployment unless already installed
-  docker --version &> /dev/null || yum install -y docker | tee -a ${OUTPUT}
-  git --version &> /dev/null || yum install -y git | tee -a ${OUTPUT}
-  yum update -y
-
-  # Ensure Docker is running
-  /sbin/service docker start
-
-  # Add Jenkins user and related configuration
-  useradd -m jenkins
-  mkdir /home/jenkins/.ssh
-  echo ${PUB_KEY} > /home/jenkins/.ssh/authorized_keys
-  chown -R jenkins: /home/jenkins/.ssh/
-  echo "jenkins ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/jenkins
-  chmod 440 /etc/sudoers.d/jenkins
 fi
+
+# Install packages for deployment unless already installed
+docker --version &> /dev/null || yum install -y docker | tee -a ${OUTPUT}
+git --version &> /dev/null || yum install -y git | tee -a ${OUTPUT}
+yum update -y
+
+# Ensure Docker is running
+/sbin/service docker start
+
+# Add Jenkins user and related configuration
+useradd -m jenkins
+mkdir /home/jenkins/.ssh
+echo ${PUB_KEY} > /home/jenkins/.ssh/authorized_keys
+chown -R jenkins: /home/jenkins/.ssh/
+echo "jenkins ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/jenkins
+chmod 440 /etc/sudoers.d/jenkins
