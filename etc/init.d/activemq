@@ -19,7 +19,7 @@ DOCKER_START="run -d \
 -t ${DOCKER_IMAGE}"
 NAME="activemq"
 PIDFILE="/var/run/${NAME}.pid"
-CID_FILE="/var/run/${NAME}.containerid"
+CIDFILE="/var/run/${NAME}.containerid"
 
 getContainerId() {
   ${DAEMON} ps | grep ${DOCKER_IMAGE} |  awk '{print $1}'
