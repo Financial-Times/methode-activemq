@@ -48,4 +48,4 @@ info "Building docker image ${IMAGE_NAME}:${ARGS[--tag]}"
 docker build -t ${IMAGE_NAME}:${ARGS[--tag]} .
 
 # Restart running activemq process
-#service ${SERVICE_NAME} restart
+service ${SERVICE_NAME} restart
