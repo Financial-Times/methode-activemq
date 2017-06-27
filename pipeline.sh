@@ -47,5 +47,8 @@ test -z "${ARGS[--tag]}" && ARGS[--tag]=${DEFAULT_TAG}
 info "Building docker image ${IMAGE_NAME}:${ARGS[--tag]}"
 docker build -t ${IMAGE_NAME}:${ARGS[--tag]} .
 
+#  Overwrite init script
+cp -f etc/init.d/activemq /etc/init.d/
+
 # Restart running activemq process
 service ${SERVICE_NAME} restart
