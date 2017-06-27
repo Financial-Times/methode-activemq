@@ -17,8 +17,9 @@ DOCKER_START="run -d \
 -p 61614:61614 \
 -p 61616:61616 \
 -t ${DOCKER_IMAGE}"
-NAME=activemq
-PIDFILE=/var/run/${NAME}.pid
+NAME="activemq"
+PIDFILE="/var/run/${NAME}.pid"
+CID_FILE="/var/run/${NAME}.containerid"
 
 getContainerId() {
   ${DAEMON} ps | grep ${DOCKER_IMAGE} |  awk '{print $1}'
@@ -34,7 +35,14 @@ case "$1" in
     else
         echo ${PID} > ${PIDFILE}
         sleep 1
-        echo "Running, PID ${PID}, container ID $(getContainerId)"
+        CONTAINER_ID="$(getContainerId)"
+        if [[ ! -z ${CONTAINER_ID} ]]; then
+          echo "Running, PID ${PID}, container ID $(getContainerId)"
+          echo ${CONTAINER_ID} > ${CIDFILE}
+        else
+          echo "Running, PID ${PID}, unable to lookup container ID. Future restarts may be problematic. :-("
+        fi
+
     fi
   ;;
   status)
@@ -51,15 +59,22 @@ case "$1" in
     if [[ ! -z "${CONTAINER_ID}" ]]; then
       echo "Stopping $NAME"
       ${DAEMON} ${DOCKER_STOP} ${CONTAINER_ID}
-      PID=$(cat ${PIDFILE})
+      echo "Stopped"
+    elif [[ -f "${CID_FILE}" ]]; then
+      docker stop $(cat ${CID_FILE})
+      echo "Stopped"
     else
-      echo "Unable to query container ID. Exit 1."
-      exit 1
+      echo "Unable to stop container as container ID not found"
     fi
     if [[ -f ${PIDFILE} ]]; then
         rm -f ${PIDFILE}
+        echo "${PIDFILE} removed"
     fi
-    echo "Stopped"
+    if [[ -f ${CIDFILE} ]]; then
+        rm -f ${CIDFILE}
+        echo "${CIDFILE} removed"
+    fi
+
   ;;
 
   restart)
