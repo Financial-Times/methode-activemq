@@ -41,7 +41,7 @@ gitPull
 test -n "${ARGS[--checkout]}" || git checkout ${ARGS[--checkout]}
 
 #  Set Docker image:tag name default unless --image parameter was provided
-test -z "${ARGS[--tag]}" || ARGS[--image]=${DEFAULT_TAG}
+test -z "${ARGS[--tag]}" || ARGS[--tag]=${DEFAULT_TAG}
 
 #  Build docker image
 docker build -t ${IMAGE_NAME}:${ARGS[--tag]} .
