@@ -47,4 +47,4 @@ test -z "${ARGS[--tag]}" || ARGS[--tag]=${DEFAULT_TAG}
 docker build -t ${IMAGE_NAME}:${ARGS[--tag]} .
 
 # Restart running activemq process
-service ${SERVICE_NAME} restart
+#service ${SERVICE_NAME} restart
