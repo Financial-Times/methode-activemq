@@ -43,13 +43,13 @@ test -z "${ARGS[--checkout]}" && git checkout ${ARGS[--checkout]}
 #  Set Docker image:tag name default unless --image parameter was provided
 test -z "${ARGS[--tag]}" && ARGS[--tag]=${DEFAULT_TAG}
 
-#  Build docker image
-info "Building docker image ${IMAGE_NAME}:${ARGS[--tag]}"
-docker build -t ${IMAGE_NAME}:${ARGS[--tag]} .
-
 #  Overwrite init script
 info "Overwrite /etc/init.d/activemq"
 cp -f etc/init.d/activemq /etc/init.d/
+
+#  Build docker image
+info "Building docker image ${IMAGE_NAME}:${ARGS[--tag]}"
+docker build -t ${IMAGE_NAME}:${ARGS[--tag]} .
 
 # Restart running activemq process
 service ${SERVICE_NAME} restart
