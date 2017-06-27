@@ -47,9 +47,11 @@ test -z "${ARGS[--tag]}" && ARGS[--tag]=${DEFAULT_TAG}
 info "Overwrite /etc/init.d/activemq"
 cp -f etc/init.d/activemq /etc/init.d/
 
+service ${SERVICE_NAME} stop
+
 #  Build docker image
 info "Building docker image ${IMAGE_NAME}:${ARGS[--tag]}"
 docker build -t ${IMAGE_NAME}:${ARGS[--tag]} .
 
 # Restart running activemq process
-service ${SERVICE_NAME} restart
+service ${SERVICE_NAME} start
