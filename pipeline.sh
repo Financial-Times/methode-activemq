@@ -48,6 +48,7 @@ info "Building docker image ${IMAGE_NAME}:${ARGS[--tag]}"
 docker build -t ${IMAGE_NAME}:${ARGS[--tag]} .
 
 #  Overwrite init script
+info "Overwrite /etc/init.d/activemq"
 cp -f etc/init.d/activemq /etc/init.d/
 
 # Restart running activemq process
