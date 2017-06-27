@@ -44,6 +44,7 @@ test -n "${ARGS[--checkout]}" || git checkout ${ARGS[--checkout]}
 test -z "${ARGS[--tag]}" || ARGS[--tag]=${DEFAULT_TAG}
 
 #  Build docker image
+info "Building docker image ${IMAGE_NAME}:${ARGS[--tag]}"
 docker build -t ${IMAGE_NAME}:${ARGS[--tag]} .
 
 # Restart running activemq process
