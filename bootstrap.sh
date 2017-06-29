@@ -9,7 +9,7 @@ OUTPUT="/var/log/bootstrap.log"
 ROOTDIR='/opt/methode'
 mkdir -p ${ROOTDIR}
 PUB_KEY="ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA05/uxgH59xqpz/8XlsyENn3tlJiKIloTn6ZJb0aBDvqagoXzO7DuDxZGF+k+iBZCnX+wVZov7dhBPY4qQ9ugW5icMDVnjoT8r3VWpyOFppZEp6K1vRVE7WVcx8DR9ydXjjQJgACZKMiB5k0qI0j8wSuHGCj6OjeImTThKI8KgkrmZgMUA7N9siRng5TnV1xtx5fPzS4ouigSjjPGeZOqbNLvgcWLJ3NXQLApmPuweOY0ou8MCpZfiOiIP5adImxNOrvn1Q2FB33+tqM6fGyXExhZTFBbV1m+cXXd5xUhOU1k8vo8RPthILV2s9xU634i4QvXfrRHjmWK8RFnsO8+lQ=="
-GIT_URL="http://Jussi.Heinonen@git.in.ft.com:7999/ns/methode-activemq.git"
+GIT_URL="http://Jussi.Heinonen@git.in.ft.com/scm/ns/methode-activemq.git"
 
 echo  "BEGIN - $(date)" | tee -a ${OUTPUT}
 if [[ "${PPID}" -eq "1" ]]; then
