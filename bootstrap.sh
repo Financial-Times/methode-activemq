@@ -34,10 +34,10 @@ fi
 # Install packages for deployment unless already installed
 docker --version &> /dev/null || yum install -y docker | tee -a ${OUTPUT}
 git --version &> /dev/null || yum install -y git | tee -a ${OUTPUT}
-yum update -y
+yum update -y | tee -a ${OUTPUT}
 
 # Ensure Docker is running
-/sbin/service docker start
+/sbin/service docker start | tee -a ${OUTPUT}
 
 # Add Jenkins user and related configuration
 useradd -m jenkins
@@ -49,7 +49,7 @@ chmod 440 /etc/sudoers.d/jenkins
 
 #  Clone the repository
 cd ${ROOTDIR}
-git clone ${GIT_URL}
+git clone ${GIT_URL} | tee -a ${OUTPUT}
 
 #  Run deployment
-methode-activemq/pipeline.sh
+methode-activemq/pipeline.sh | tee -a ${OUTPUT}
