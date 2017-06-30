@@ -11,7 +11,7 @@ Parameters:
   DeploymentScriptURL:
     Description: Bootstrap script URL
     Type: String
-    Default: https://raw.githubusercontent.com/Financial-Times/methode-activemq/master/bootstrap.sh
+    Default: http://git.in.ft.com/projects/NS/repos/methode-activemq/raw/bootstrap.sh
   VPC:
     Description: This is the VPC the stack will be deployed inside.
     Type: AWS::EC2::VPC::Id
