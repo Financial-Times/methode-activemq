@@ -20,16 +20,13 @@ REPO=$(echo ${REPO_LIST[-1]} | cut -d '.' -f 1)
 BRANCHNAME=$(echo ${GIT_BRANCH} | cut -d '/' -f 2)
 
 if [[ "${BRANCHNAME}" == "master" ]]; then
-  echo "Deploying to ${DNS_PROD}"
-  validateDnsName ${DNS_PROD}
+  DNS_NAME="${DNS_PROD}"
 elif [[ "${BRANCHNAME}" =~ "test_" ]]; then
-  echo "Deploying to ${DNS_TEST}"
-  validateDnsName ${DNS_TEST}
+  DNS_NAME="${DNS_TEST}"
 else
-  echo "Deploying to ${REPO}.${BRANCHNAME}.${DNS_TLD}"
-  validateDnsName ${REPO}.${BRANCHNAME}.${DNS_TLD}
+  DNS_NAME="${REPO}.${BRANCHNAME}.${DNS_TLD}"
 fi
+echo "Deploying to ${DNS_NAME}"
+validateDnsName ${DNS_NAME}
 
-
-
-#ssh -o StrictHostKeyChecking=no -i ~/.ssh/jenkins_id_rsa 10.170.37.239 "cd /opt/methode/methode-activemq && sudo git pull && sudo ./pipeline.sh"
+ssh -o StrictHostKeyChecking=no -i ~/.ssh/jenkins_id_rsa ${DNS_NAME} "cd /opt/methode/methode-activemq && sudo git pull && sudo ./pipeline.sh"
