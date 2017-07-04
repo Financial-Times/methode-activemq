@@ -1,5 +1,5 @@
 errorAndExit() {
-  echo -e "\e[31m$(date '+%x %X') ERROR: $1\e[0m"
+  echo "ERROR: $1"
   exit $2
 }
 
