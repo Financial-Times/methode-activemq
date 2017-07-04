@@ -54,6 +54,7 @@ cp -f etc/init.d/activemq /etc/init.d/
 
 service ${SERVICE_NAME} stop
 
+
 #  Build docker image
 info "Building docker image ${IMAGE_NAME}:${ARGS[--tag]}"
 docker build -t ${IMAGE_NAME}:${ARGS[--tag]} .
