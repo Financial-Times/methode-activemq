@@ -28,4 +28,4 @@ fi
 echo "Deploying to ${DNS_NAME}"
 validateDnsName ${DNS_NAME}
 
-ssh -o StrictHostKeyChecking=no -i ~/.ssh/jenkins_id_rsa ${DNS_NAME} "cd /opt/methode/methode-activemq && sudo git pull && sudo ./pipeline.sh"
+ssh -o StrictHostKeyChecking=no -i ~/.ssh/jenkins_id_rsa ${DNS_NAME} "cd /opt/methode/methode-activemq && sudo git pull && sudo ./pipeline.sh --checkout=${BRANCHNAME}"
