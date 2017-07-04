@@ -1,5 +1,6 @@
 from njmittet/alpine-openjdk:jre8
 
+
 MAINTAINER Jussi Heinonen <jussi.heinonen@ft.com>
 
 ENV ACTIVEMQ_VERSION 5.14.4
