@@ -46,7 +46,7 @@ else
 fi
 
 #  Set Docker image:tag name default unless --image parameter was provided
-test ! -z "${ARGS[--tag]}" && ARGS[--tag]=${DEFAULT_TAG}
+test -z "${ARGS[--tag]}" && ARGS[--tag]=${DEFAULT_TAG}
 
 #  Overwrite init script
 info "Overwrite /etc/init.d/activemq"
