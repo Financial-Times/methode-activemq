@@ -38,10 +38,10 @@ test -z "${ARGS[--help]}" || usage
 gitPull
 
 #  Checkout Git branch or tag if specified, -n option stands for non-zero
-test -z "${ARGS[--checkout]}" && git checkout ${ARGS[--checkout]}
+test ! -z "${ARGS[--checkout]}" && git checkout ${ARGS[--checkout]}
 
 #  Set Docker image:tag name default unless --image parameter was provided
-test -z "${ARGS[--tag]}" && ARGS[--tag]=${DEFAULT_TAG}
+test ! -z "${ARGS[--tag]}" && ARGS[--tag]=${DEFAULT_TAG}
 
 #  Overwrite init script
 info "Overwrite /etc/init.d/activemq"
