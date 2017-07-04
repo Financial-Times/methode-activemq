@@ -7,7 +7,7 @@
 #  move into root of the script directory
 cd $(dirname $0)
 #  Source the sh/functions.sh
-. sh/functions.sh
+. functions.sh
 
 DNS_TLD="cms.in.ft.com"
 DNS_PROD="methode-activemq.prod.${DNS_TLD}"
