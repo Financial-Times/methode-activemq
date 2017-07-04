@@ -37,8 +37,13 @@ test -z "${ARGS[--help]}" || usage
 #  Ensure we have the latest code base
 gitPull
 
-#  Checkout Git branch or tag if specified, -n option stands for non-zero
-test ! -z "${ARGS[--checkout]}" && git checkout ${ARGS[--checkout]}
+#  Checkout Git branch or tag if specified
+if [[ ! -z "${ARGS[--checkout]}" ]]; then
+  info "Switching to branch ${ARGS[--checkout]}"
+  git checkout ${ARGS[--checkout]}
+else
+  info "Using branch master"
+fi
 
 #  Set Docker image:tag name default unless --image parameter was provided
 test ! -z "${ARGS[--tag]}" && ARGS[--tag]=${DEFAULT_TAG}
