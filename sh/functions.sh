@@ -29,3 +29,8 @@ processCliArgs() {
     fi
   done
 }
+
+validateDnsName() {
+  # Checks whether DNS name given and if not then exit
+  host $1 > /dev/null || errorAndExit "Host $1 not found. Exit 1." 1
+}
