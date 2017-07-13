@@ -1,0 +1,79 @@
+#!/bin/bash
+#
+# Init script to manage ActiveMQ runtime
+#
+# Exit codes - http://refspecs.linuxbase.org/LSB_2.0.1/LSB-PDA/LSB-PDA/iniscrptact.html
+#   0	program is running or service is OK
+#   1	program is dead and /var/run pid file exists
+#   3	program is not running
+#
+# chkconfig: 2345 99 20
+# description:  ActiveMQ runtime
+# processname: activemq
+
+NAME="activemq"
+PIDFILE="/var/run/${NAME}.pid"
+DAEMON="/opt/${NAME}/bin/${NAME}"
+USER="activemq"
+
+isRunning() {
+  if [[ -f "${PIDFILE}" ]]; then
+    if [[ "$(ps | grep ${NAME} >/dev/null ; echo $?)" -eq "0" ]]; then
+      echo $(cat ${PIDFILE})
+    else
+      echo 1
+    fi
+  else
+    echo 1
+  fi
+}
+
+case "$1" in
+  start)
+  	echo "Starting $NAME..."
+  	PID="$(su ${USER} -c \"$(${DAEMON} console > /dev/null 2>&1 & echo $!)\")"
+    if [[ -z ${PID} ]]; then
+        echo "Fail"
+        exit 3
+    else
+        echo ${PID} > ${PIDFILE}
+        echo "Running, PID ${PID}"
+        exit 0
+    fi
+  ;;
+  status)
+    echo "Checking ${NAME}..."
+    if [[ "$(isRunning)" -ne "1" ]]; then
+      echo "${NAME} is running"
+      exit 0
+    else
+      echo "${NAME} is dead"
+      exit 3
+    fi
+  ;;
+  stop)
+    PID="$(isRunning)"
+    if [[ "${PID}" -ne "1" ]]; then
+      echo "Stopping $NAME"
+      kill -9 ${PID}
+      echo "Stopped"
+    else
+      echo "Stopped"
+    fi
+    if [[ -f ${PIDFILE} ]]; then
+        rm -f ${PIDFILE}
+        echo "${PIDFILE} removed"
+    fi
+    exit 3
+  ;;
+
+  restart)
+    	$0 stop
+    	$0 start
+  ;;
+
+  *)
+          echo "Usage: $0 {status|start|stop|restart}"
+          exit 1
+  ;;
+esac
