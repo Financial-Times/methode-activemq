@@ -32,6 +32,7 @@ case "$1" in
   start)
   	echo "Starting $NAME..."
   	su ${USER} -c "${DAEMON} console > /dev/null 2>&1 &"
+    sleep 5
     PID=$(ps -ef | grep java | grep ${NAME} | awk '{print $2}')
     if [[ -z ${PID} ]]; then
         echo "Failed"
