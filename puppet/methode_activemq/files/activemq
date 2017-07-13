@@ -17,12 +17,12 @@ DAEMON="/opt/${NAME}/bin/${NAME}"
 USER="activemq"
 
 isRunning() {
-  if [[ -f "${PIDFILE}" ]]; then
-    if [[ "$(ps | grep ${NAME} >/dev/null ; echo $?)" -eq "0" ]]; then
-      echo $(cat ${PIDFILE})
-    else
-      echo 1
-    fi
+  unset PID
+  for each in $(ps | grep java | grep ${NAME} | awk '{print $1}'); do
+    PID=${each}
+  done
+  if [[ "${PID}" != "" ]]; then
+    echo 0
   else
     echo 1
   fi
@@ -31,14 +31,16 @@ isRunning() {
 case "$1" in
   start)
   	echo "Starting $NAME..."
-  	PID="$(su ${USER} -c \"$(${DAEMON} console > /dev/null 2>&1 & echo $!)\")"
+  	su ${USER} -c "${DAEMON} console > /dev/null 2>&1 &"
+    for each in $(ps | grep java | grep ${NAME} | awk '{print $1}'); do
+      PID=${each}
+    done
     if [[ -z ${PID} ]]; then
-        echo "Fail"
-        exit 3
+        echo "Failed"
+        exit 1
     else
         echo ${PID} > ${PIDFILE}
         echo "Running, PID ${PID}"
-        exit 0
     fi
   ;;
   status)
@@ -48,6 +50,7 @@ case "$1" in
       exit 0
     else
       echo "${NAME} is dead"
+      rm -f ${PIDFILE}
       exit 3
     fi
   ;;
@@ -55,7 +58,9 @@ case "$1" in
     PID="$(isRunning)"
     if [[ "${PID}" -ne "1" ]]; then
       echo "Stopping $NAME"
-      kill -9 ${PID}
+      for each in $(ps | grep java | grep ${NAME} | awk '{print $1}'); do
+        kill -9 ${each}
+      done
       echo "Stopped"
     else
       echo "Stopped"

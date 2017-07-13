@@ -17,8 +17,5 @@ class methode_activemq::install {
         unless  => 'test -L /usr/bin/java'
       }
     }
-    'RedHat': {
-      package { 'java-1.8.0-openjdk': ensure => 'installed' }
-    }
   }
 }
