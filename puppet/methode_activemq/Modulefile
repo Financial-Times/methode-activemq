@@ -1,5 +1,5 @@
 name    'ft-methode_activemq'
-version '0.0.1'
+version '@semver@'
 source 'UNKNOWN'
 author 'ft'
 license 'Apache License, Version 2.0'
