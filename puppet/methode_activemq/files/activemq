@@ -18,7 +18,7 @@ USER="activemq"
 
 isRunning() {
   unset PID
-  for each in $(ps | grep java | grep ${NAME} | awk '{print $1}'); do
+  for each in $(ps  -ef| grep java | grep ${NAME} | awk '{print $2}'); do
     PID=${each}
   done
   if [[ "${PID}" != "" ]]; then
@@ -32,7 +32,7 @@ case "$1" in
   start)
   	echo "Starting $NAME..."
   	su ${USER} -c "${DAEMON} console > /dev/null 2>&1 &"
-    for each in $(ps | grep java | grep ${NAME} | awk '{print $1}'); do
+    for each in $(ps -ef | grep java | grep ${NAME} | awk '{print $2}'); do
       PID=${each}
     done
     if [[ -z ${PID} ]]; then
@@ -58,7 +58,7 @@ case "$1" in
     PID="$(isRunning)"
     if [[ "${PID}" -ne "1" ]]; then
       echo "Stopping $NAME"
-      for each in $(ps | grep java | grep ${NAME} | awk '{print $1}'); do
+      for each in $(ps -ef | grep java | grep ${NAME} | awk '{print $2}'); do
         kill -9 ${each}
       done
       echo "Stopped"
