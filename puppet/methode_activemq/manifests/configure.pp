@@ -4,6 +4,11 @@ class methode_activemq::configure {
     managehome  => true,
   }
   ->
+  exec { 'change-file-ownership':
+    command => "chown -R activemq: /opt/${methode_activemq::activemq}/",
+    unless  => "ls -l /opt/${methode_activemq::activemq}/README.txt | grep -o 'activemq activemq'",
+  }
+  ->
   file { "/opt/${methode_activemq::activemq}/conf/activemq.xml":
     require => Exec['install-package'],
     notify => Service['activemq'],
