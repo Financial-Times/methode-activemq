@@ -16,7 +16,7 @@ class methode_activemq::configure {
     require => Exec['install-package'],
     notify => Service['activemq'],
     owner  => 'activemq',
-    owner  => 'activemq',
+    group  => 'activemq',
     source => "puppet:///modules/${module_name}/jetty.xml";
   }
   ->
