@@ -8,12 +8,14 @@ class methode_activemq::configure {
     require => Exec['install-package'],
     notify => Service['activemq'],
     owner  => 'activemq',
+    group  => 'activemq',
     source => "puppet:///modules/${module_name}/activemq.xml";
   }
   ->
   file { "/opt/${methode_activemq::activemq}/conf/jetty.xml":
     require => Exec['install-package'],
     notify => Service['activemq'],
+    owner  => 'activemq',
     owner  => 'activemq',
     source => "puppet:///modules/${module_name}/jetty.xml";
   }
