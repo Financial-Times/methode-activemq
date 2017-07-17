@@ -8,6 +8,11 @@ class methode_activemq::install {
     ensure  => 'link',
     target  => "/opt/${methode_activemq::activemq}"
   }
+  ->
+  exec { 'change-file-ownership':
+    command => "chown -R activemq: /opt/${methode_activemq::activemq}/",
+    unless  => "ls -l /opt/${methode_activemq::activemq}/README.txt | grep -o 'activemq activemq'",
+  }
 
   case $::operatingsystem {
     'Alpine': {
