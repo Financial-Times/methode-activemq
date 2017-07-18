@@ -1,0 +1,185 @@
+---
+AWSTemplateFormatVersion: 2010-09-09
+Description: >
+  Template to spin-up Methode ActiveMQ Broker
+
+Parameters:
+  KonstructorAPIKey:
+    Description: API Key used to access Konstructor DNS
+    Type: String
+    Default: to be replaced
+  DeploymentScriptURL:
+    Description: Bootstrap script URL
+    Type: String
+    Default: http://git.in.ft.com/projects/NS/repos/methode-activemq/raw/bootstrap.sh
+  VPC:
+    Description: This is the VPC the stack will be deployed inside.
+    Type: AWS::EC2::VPC::Id
+    Default: vpc-729f2815
+  Subnet1:
+    Description: Private subnet eu-west-1a
+    Type: AWS::EC2::Subnet::Id
+    Default: subnet-48bd0c01
+  Subnet2:
+    Description: Private subnet eu-west-1b
+    Type: AWS::EC2::Subnet::Id
+    Default: subnet-0839cd53
+  Subnet3:
+    Description: Private subnet eu-west-1c
+    Type: AWS::EC2::Subnet::Id
+    Default: subnet-e378d084
+  ImageId:
+    Description: Amazon Linux AMI 2017.03.1 (HVM), SSD Volume Type, amzn-ami-hvm-2017.03.1.20170623-x86_64-gp2
+    Type: String
+    Default: ami-d7b9a2b1
+  InstanceKey:
+    Description: EC2User Key
+    Type: AWS::EC2::KeyPair::KeyName
+    Default: team-cms-ec2-ft-tech-editorial-prod
+  IamInstanceProfile:
+    Description: What IAM role to give to this instance
+    Type: String
+    Default: FT-Linux-Role
+  Sudo:
+    Description: Sudo Group to be applied by default
+    Type: String
+    Default: eng
+  TagEnvironment:
+    Description: Tag detail for the Environment
+    Type: String
+    AllowedValues:
+      - 'd'
+      - 't'
+      - 'p'
+      - 'int'
+    Default: d
+  TagTeamDL:
+    Description: Tag of the TeamDL.
+    Type: String
+    ConstraintDescription: There must be a valid email address for the TeamDL
+    AllowedPattern: ^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$
+    Default: team.cms@ft.com
+  TagSystemCode:
+    Description: Tag detail for the SystemCode
+    Type: String
+    Default: Methode
+  TagIpCode:
+    Description: Tag detail for the ipCode
+    Type: String
+    Default: PA43
+  TagDescription:
+    Description: Instance description
+    Type: String
+    Default: ActiveMQ Broker for Methode Print Shapes
+  InstanceType:
+    Description: The type and size of the instance. Check documentation for recommended types.
+    Type: String
+    AllowedValues:
+    - t2.nano
+    - t2.micro
+    - t2.small
+    - t2.medium
+    - t2.large
+    - m4.large
+    - m4.xlarge
+    - m4.2xlarge
+    - m4.4xlarge
+    - m4.10xlarge
+    - m4.16xlarge
+    - m3.medium
+    - m3.large
+    - m3.xlarge
+    - m3.2xlarge
+    - c4.large
+    - c4.xlarge
+    - c4.2xlarge
+    - c4.4xlarge
+    - c4.8xlarge
+    - c3.8xlarge
+    - p2.xlarge
+    - p2.8xlarge
+    - p2.16xlarge
+    - g2.2xlarge
+    - g2.8xlarge
+    - x1.32xlarge
+    - r3.large
+    - r3.xlarge
+    - r3.2xlarge
+    - r3.4xlarge
+    - r3.8xlarge
+    - i2.xlarge
+    - i2.2xlarge
+    - i2.4xlarge
+    - i2.8xlarge
+    - d2.xlarge
+    - d2.2xlarge
+    - d2.4xlarge
+    - d2.8xlarge
+    Default: t2.small
+Conditions:
+  HasKeyName:
+    Fn::Not:
+    - Fn::Equals:
+      - ''
+      - Ref: InstanceKey
+
+Resources:
+  #auto-scaling groups
+  AutoScalingGroup:
+    Type: AWS::AutoScaling::AutoScalingGroup
+    Properties:
+      LaunchConfigurationName:
+        Ref: LaunchConfig
+      MinSize: '1'
+      MaxSize: '1'
+      VPCZoneIdentifier:
+        - Ref: Subnet1
+        - Ref: Subnet2
+        - Ref: Subnet3
+      Tags:
+      - Key: environment
+        Value:
+          Ref: TagEnvironment
+        PropagateAtLaunch: true
+      - Key: teamDL
+        Value:
+          Ref: TagTeamDL
+        PropagateAtLaunch: true
+      - Key: systemCode
+        Value:
+          Ref: TagSystemCode
+        PropagateAtLaunch: true
+      - Key: ipCode
+        Value:
+          Ref: TagIpCode
+        PropagateAtLaunch: true
+      - Key: description
+        Value:
+          Ref: TagDescription
+        PropagateAtLaunch: true
+  LaunchConfig:
+    Type: AWS::AutoScaling::LaunchConfiguration
+    Properties:
+      SecurityGroups:
+        - sg-15be656d
+        - sg-76b9620e
+      InstanceType:
+        Ref: InstanceType
+      ImageId:
+        Ref: ImageId
+      AssociatePublicIpAddress: false
+      KeyName:
+        Fn::If:
+        - HasKeyName
+        - Ref: InstanceKey
+        - Ref: AWS::NoValue
+      IamInstanceProfile:
+        Ref: IamInstanceProfile
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash -x
+          /usr/bin/aws s3 cp s3://ft-ce-repository/amazon-ftbase/releases/bootstrap.sh .
+          bash ./bootstrap.sh -s ${Sudo} -e ${TagEnvironment}
+          # Pull and execute deployment script
+          echo ${KonstructorAPIKey} > /root/.kon_dns_key
+          /usr/bin/curl -s ${DeploymentScriptURL} | /bin/bash
