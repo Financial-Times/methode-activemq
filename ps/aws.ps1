@@ -8,7 +8,7 @@ function loadAwsPsModule() {
     $aws_credentials = 'c:\tools\credentials'
     $file_exist = Test-Path $aws_credentials
     if ( !$file_exist ) {
-      Write-Host "Failed to validate AWS credentials $aws_credentials. Exit 1."
+      errorAndExit "Failed to validate AWS credentials $aws_credentials." 1
     }
   }
   catch {
