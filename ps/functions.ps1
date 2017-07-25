@@ -1,4 +1,4 @@
-function errro([string]$message) {
+function error([string]$message) {
   Write-Host "$message." -foreground "Red"
 }
 
