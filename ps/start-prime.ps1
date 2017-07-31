@@ -30,3 +30,6 @@ else {
 
 # IMPORT AWS POWERSHELL MODULE AND READ REDENTIALS
 loadAwsPsModule
+
+# START PRIME CLIENT IN SERVER MODE
+& "C:\Program Files\EidosMedia\Methode\bin\Methode.exe" -server=printpreview1

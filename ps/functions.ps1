@@ -1,5 +1,5 @@
 function error([string]$message) {
-  Write-Host "$message." -foreground "Red"
+  Write-Host "$message" -foreground "Red"
 }
 
 function errorAndExit([string]$message, [int]$code) {
