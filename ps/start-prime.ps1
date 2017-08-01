@@ -10,7 +10,6 @@ param (
    [string]$namespace = "com.ft.edtech.methode.prod"
 )
 
-$ft_env = "test"
 $cwd = $PSScriptRoot
 . ${cwd}/aws.ps1
 . ${cwd}/functions.ps1
@@ -18,24 +17,35 @@ $cwd = $PSScriptRoot
 
 $hostname = $(hostname)
 if ( $hostname.Substring(0,2) -eq "FT" ) {
+  # Set dev flag false
   $dev = $FALSE
+
 }
 else {
   $dev = $TRUE
 }
 if ( $dev ) {
-  Write-Host "Dev machine"
+  info "Dev machine"
   $primecfg = "/repo/cfg/primeServer.cfg"
+  $amq_env = "int"
 }
 else {
-  Write-Host "Windows Machine"
+  info "Windows Machine"
   $primecfg = "C:\Program Files\EidosMedia\Methode\cfg\primeServer.cfg"
+
+  # Set environment for AMQ endpoint based on 2 last characters of hostname
+  $last_two = $hostname.Substring($hostname.Length - 2)
+  switch ($last_two) {
+    '-p' { $amq_env = "prod" }
+    '-t' { $amq_env = "test" }
+    'nt' { $amq_env = "int" }
+  }
 }
 
 # Set ActiveMQ hostname in primeServer.cfg
 if ($(Test-path $primecfg) -eq $True) {
   info "Found config file $primecfg"
-  gc $primecfg | %{ $_ -replace "binary.staging.methode.(.*).internal.ft.com", "binary.staging.methode.${ft_env}.internal.ft.com" } | Set-Content primecfg.tmp
+  gc $primecfg | %{ $_ -replace "binary.staging.methode.(.*).internal.ft.com", "binary.staging.methode.${amq_env}.internal.ft.com" } | Set-Content primecfg.tmp
   gc primecfg.tmp | Set-Content $primecfg
   Remove-Item primecfg.tmp
 }
