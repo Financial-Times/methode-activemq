@@ -45,6 +45,7 @@ else {
 # Set ActiveMQ hostname in primeServer.cfg
 if ($(Test-path $primecfg) -eq $True) {
   info "Found config file $primecfg"
+  info "Configuring endpoint binary.staging.methode.${amq_env}.internal.ft.com"
   gc $primecfg | %{ $_ -replace "binary.staging.methode.(.*).internal.ft.com", "binary.staging.methode.${amq_env}.internal.ft.com" } | Set-Content primecfg.tmp
   gc primecfg.tmp | Set-Content $primecfg
   Remove-Item primecfg.tmp
