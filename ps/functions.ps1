@@ -6,3 +6,7 @@ function errorAndExit([string]$message, [int]$code) {
   Write-Host "$message. Exit $code" -foreground "Red"
   exit $code
 }
+
+function info([string]$message) {
+  Write-Host "$message" -foreground "Blue"
+}

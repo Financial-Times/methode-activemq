@@ -10,9 +10,11 @@ param (
    [string]$namespace = "com.ft.edtech.methode.prod"
 )
 
+$ft_env = "test"
 $cwd = $PSScriptRoot
 . ${cwd}/aws.ps1
 . ${cwd}/functions.ps1
+
 
 $hostname = $(hostname)
 if ( $hostname.Substring(0,2) -eq "FT" ) {
@@ -23,13 +25,29 @@ else {
 }
 if ( $dev ) {
   Write-Host "Dev machine"
+  $primecfg = "/repo/cfg/primeServer.cfg"
 }
 else {
   Write-Host "Windows Machine"
+  $primecfg = "C:\Program Files\EidosMedia\Methode\cfg\primeServer.cfg"
 }
 
-# IMPORT AWS POWERSHELL MODULE AND READ REDENTIALS
-loadAwsPsModule
+# Set ActiveMQ hostname in primeServer.cfg
+if ($(Test-path $primecfg) -eq $True) {
+  info "Found config file $primecfg"
+  gc $primecfg | %{ $_ -replace "binary.staging.methode.(.*).internal.ft.com", "binary.staging.methode.${ft_env}.internal.ft.com" } | Set-Content $primecfg
+}
+else {
+  info "$primecfg not found"
+}
 
-# START PRIME CLIENT IN SERVER MODE
-& "C:\Program Files\EidosMedia\Methode\bin\Methode.exe" -server=printpreview1
+if ( ! $dev) {
+  # IMPORT AWS POWERSHELL MODULE AND READ REDENTIALS
+  loadAwsPsModule
+
+  # START PRIME CLIENT IN SERVER MODE
+  & "C:\Program Files\EidosMedia\Methode\bin\Methode.exe" -server=printpreview1
+}
+else {
+  info "Skipping Methode Prime startup"
+}
