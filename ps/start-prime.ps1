@@ -56,11 +56,14 @@ else {
 
 if ( ! $dev) {
   # IMPORT AWS POWERSHELL MODULE AND READ REDENTIALS
+  info "Load AWS PowerShell module"
   loadAwsPsModule
 
   # START PRIME CLIENT IN SERVER MODE
+  info "Start Methode Prime Server"
   & "C:\Program Files\EidosMedia\Methode\bin\Methode.exe" -server=printpreview1
 }
 else {
   info "Skipping Methode Prime startup"
 }
+info "Script execution finished"
