@@ -15,6 +15,7 @@ $cwd = $PSScriptRoot
 $rvalue = checkProcess $name
 if ( $rvalue ) {
   info "Process $name is running"
+  exit 0
 }
 else {
   info "Process $name is not running. Starting instance."
