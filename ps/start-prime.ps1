@@ -14,16 +14,6 @@ $cwd = $PSScriptRoot
 . ${cwd}/aws.ps1
 . ${cwd}/functions.ps1
 
-
-$hostname = $(hostname)
-if ( $hostname.Substring(0,2) -eq "FT" ) {
-  # Set dev flag false
-  $dev = $FALSE
-
-}
-else {
-  $dev = $TRUE
-}
 if ( $dev ) {
   info "Dev machine"
   $primecfg = "/repo/cfg/primeServer.cfg"
