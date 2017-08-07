@@ -7,10 +7,11 @@ Parameters:
   KonstructorAPIKey:
     Description: API Key used to access Konstructor DNS
     Type: String
-    Default: to be replaced
+    Default: User provided
   JoinDomainPassword:
     Description: Password to join computer in domain
     Type: String
+    Default: User provided
   DeploymentScriptURL:
     Description: Bootstrap script URL
     Type: String
@@ -32,9 +33,9 @@ Parameters:
     Type: AWS::EC2::Subnet::Id
     Default: subnet-e378d084
   ImageId:
-    Description: Prime Server Win2012, version 0.0.1
+    Description: Prime Server Win2012 20170807
     Type: String
-    Default: ami-19ae4060
+    Default: ami-083dcb71
   InstanceKey:
     Description: EC2User Key
     Type: AWS::EC2::KeyPair::KeyName
@@ -69,7 +70,11 @@ Parameters:
   TagIpCode:
     Description: Tag detail for the ipCode
     Type: String
-    Default: PA43
+    Default: P204
+  TagIpName:
+    Description: Tag detail for the Name
+    Type: String
+    Default: FTAP012-WVIR-P
   TagDescription:
     Description: Instance description
     Type: String
