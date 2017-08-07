@@ -145,6 +145,9 @@ Resources:
         - Ref: Subnet2
         - Ref: Subnet3
       Tags:
+      - Key: Name
+        Value:
+          Ref: TagName
       - Key: environment
         Value:
           Ref: TagEnvironment
