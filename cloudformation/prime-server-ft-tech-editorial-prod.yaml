@@ -33,9 +33,9 @@ Parameters:
     Type: AWS::EC2::Subnet::Id
     Default: subnet-e378d084
   ImageId:
-    Description: Prime Server Win2012 20170807
+    Description: Prime Server Win2012 20170808
     Type: String
-    Default: ami-083dcb71
+    Default: ami-719f6e08
   InstanceKey:
     Description: EC2User Key
     Type: AWS::EC2::KeyPair::KeyName
@@ -71,7 +71,7 @@ Parameters:
     Description: Tag detail for the ipCode
     Type: String
     Default: P204
-  TagIpName:
+  TagName:
     Description: Tag detail for the Name
     Type: String
     Default: FTAP012-WVIR-P
@@ -148,6 +148,7 @@ Resources:
       - Key: Name
         Value:
           Ref: TagName
+        PropagateAtLaunch: true
       - Key: environment
         Value:
           Ref: TagEnvironment
