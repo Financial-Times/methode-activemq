@@ -24,4 +24,6 @@ To install different version of ActiveMQ pass in parameter `activemq_version` in
 
 ## Project
 
+Module is built by (Build ft-methode_activemq)[http://ftjen04481-lvpr-uk-p/job/Build%20ft-methode_activemq/]
+
 Currently Jussi's project but if you want to get involved drop me a message on jussi.heinonen@ft.com.
