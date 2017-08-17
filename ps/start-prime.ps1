@@ -27,8 +27,8 @@ else {
   $last_two = $hostname.Substring($hostname.Length - 2)
   switch ($last_two) {
     '-p' { $amq_env = "test" }
-    '-t' { $amq_env = "int" }
-    'nt' { $amq_env = "int" }
+    '-t' { $amq_env = "test" }
+    'nt' { $amq_env = "test" }
   }
 }
 
