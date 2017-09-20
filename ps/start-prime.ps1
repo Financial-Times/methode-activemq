@@ -26,9 +26,9 @@ else {
   # Set environment for AMQ endpoint based on 2 last characters of hostname
   $last_two = $hostname.Substring($hostname.Length - 2)
   switch ($last_two) {
-    '-p' { $amq_env = "test" }
+    '-p' { $amq_env = "prod" }
     '-t' { $amq_env = "test" }
-    'nt' { $amq_env = "test" }
+    'nt' { $amq_env = "int" }
   }
 }
 
