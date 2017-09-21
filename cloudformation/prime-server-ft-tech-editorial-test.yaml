@@ -1,7 +1,7 @@
 ---
 AWSTemplateFormatVersion: 2010-09-09
 Description: >
-  Template to spin-up Methode Primer Server instance on ft-tech-editorial-prod
+  Template to spin-up Methode Primer Server TEST instance on ft-tech-editorial-prod
 
 Parameters:
   KonstructorAPIKey:
@@ -33,9 +33,9 @@ Parameters:
     Type: AWS::EC2::Subnet::Id
     Default: subnet-e378d084
   ImageId:
-    Description: ftapp012-wvir-p-20170920
+    Description: ftap001-wvir-p-20170921
     Type: String
-    Default: ami-4e1ad637
+    Default: ami-88b47bf1
   InstanceKey:
     Description: EC2User Key
     Type: AWS::EC2::KeyPair::KeyName
@@ -74,7 +74,7 @@ Parameters:
   TagName:
     Description: Tag detail for the Name
     Type: String
-    Default: FTAP012-WVIR-P
+    Default: FTAP001-WVIR-T
   TagDescription:
     Description: Instance description
     Type: String
