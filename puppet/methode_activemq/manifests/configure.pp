@@ -1,4 +1,6 @@
 class methode_activemq::configure {
+  $amq_pass = hiera('amq_pass') # Hiera lookup for key amq_pass on Hieradata. Abort if value is not set.
+
   user { 'activemq':
     ensure      => present,
     managehome  => true,
@@ -23,6 +25,14 @@ class methode_activemq::configure {
     owner  => 'activemq',
     group  => 'activemq',
     source => "puppet:///modules/${module_name}/jetty.xml";
+  }
+  ->
+  file { "/opt/activemq/conf/jetty-realm.properties":
+    require => Exec['install-package'],
+    notify => Service['activemq'],
+    owner  => 'activemq',
+    group  => 'activemq',
+    content => template("${module_name}/jetty-realm.properties.erb");
   }
   ->
   file { "/etc/init.d/activemq":
