@@ -33,9 +33,9 @@ Parameters:
     Type: AWS::EC2::Subnet::Id
     Default: subnet-e378d084
   ImageId:
-    Description: ftapp012-wvir-p-20170920
+    Description: ftap012-wvir-p-10102017
     Type: String
-    Default: ami-4e1ad637
+    Default: ami-a06ebed9
   InstanceKey:
     Description: EC2User Key
     Type: AWS::EC2::KeyPair::KeyName
