@@ -4,12 +4,12 @@ function loadAwsPsModule() {
     Write-Host 'Loading AWS module'
     Import-Module -Name $aws_module -ErrorAction Stop
     Write-Host 'AWS module loaded'
-    Write-Host 'Validating AWS credentials'
-    $aws_credentials = 'c:\tools\credentials'
-    $file_exist = Test-Path $aws_credentials
-    if ( !$file_exist ) {
-      error "Failed to validate AWS credentials $aws_credentials."
-    }
+    #Write-Host 'Validating AWS credentials'
+    #$aws_credentials = 'c:\tools\credentials'
+    #$file_exist = Test-Path $aws_credentials
+    #if ( !$file_exist ) {
+    #  error "Failed to validate AWS credentials $aws_credentials."
+    #}
   }
   catch {
     Write-Host "Failed to load AWS Powershell module"
