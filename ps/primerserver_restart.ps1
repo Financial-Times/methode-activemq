@@ -1,6 +1,6 @@
 # Script that starts/restarts Methode Prime client
 #
-# USAGE: ./ps/prime-server-restart.ps1
+# USAGE: ./ps/primeserver_restart.ps1
 #
 # PREREQUISITES
 #
