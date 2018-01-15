@@ -6,18 +6,21 @@
 #
 #  Script requires  _AWS Tools for Powershell_, see https://aws.amazon.com/powershell/ for details
 
-
-# Process optional command line arguments
-param (
-   [string]$namespace = "com.ft.editorial.cms.printpreview.test",
-   [string]$region = "eu-west-1"
-)
-
 $name = "Methode"
 $sleep = 5
 $cwd = $PSScriptRoot
-. ${cwd}/aws.ps1
+#. ${cwd}/aws.ps1
 . ${cwd}/functions.ps1
+
+function setNamespace () {
+  # Set environment for AMQ endpoint based on 2 last characters of hostname
+  $last_two = $hostname.Substring($hostname.Length - 2)
+  switch ($last_two) {
+    '-p' { $ft_env = "prod" }
+    '-t' { $ft_env = "test" }
+  }
+  return "com.ft.editorial.cms.printpreview.$ft_env"
+}
 
 $rvalue = checkProcess $name
 if ( $rvalue ) {
@@ -30,12 +33,13 @@ else {
   Write-Host "$name is not running, starting"
   & "C:\Program Files\EidosMedia\Methode\bin\Methode.exe" -server=printpreview1
 }
-
+$namespace = setNamespace
 Start-Sleep -s $sleep
 $rvalue = checkProcess $name
 if ( $rvalue ) {
-  . ${cwd}/cloudwatch_put.ps1 -value 1 -namespace "$namespace"
+  . ${cwd}/cloudwatch_put.ps1 -value 1 -namespace $namespace
 }
 else {
-  . ${cwd}/cloudwatch_put.ps1 -value 0 -namespace "$namespace"
+  . ${cwd}/cloudwatch_put.ps1 -value 0 -namespace $namespace
 }
+Start-Sleep -s $sleep

@@ -7,7 +7,7 @@
 #  Script requires  _AWS Tools for Powershell_, see https://aws.amazon.com/powershell/ for details
 # Process optional command line arguments
 param (
-   [string]$namespace = "com.ft.edtech.methode.prod"
+   [string]$namespace = "com.ft.editorial.cms.printpreview.prod"
 )
 
 $cwd = $PSScriptRoot

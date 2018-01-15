@@ -35,9 +35,9 @@ function putMetricData () {
   $dat.Unit = "Count"
   $dat.MetricName = "methode-prime-running-on-$env:computername"
   $dat.Value = $value
-  Set-DefaultAWSRegion -Region "$region"
+  Set-DefaultAWSRegion -Region $region
   Write-CWMetricData -Namespace $namespace -MetricData $dat
-  Write-Host "Sent value $value to namespace $namespace"
+  Write-Host "Sent value $value to namespace $namespace, exit code $LASTEXITCODE"
 }
 
 putMetricData
