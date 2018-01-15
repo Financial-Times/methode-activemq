@@ -2,7 +2,7 @@
 #
 #
 #
-# USAGE: ./cloudwatch_put.ps1 -value [integer] -namespace "com.ft.editorial.cms.printpreview.test"
+# USAGE: ./cloudwatch_put.ps1 -value [integer] -namespace "com.ft.editorial.cms.printpreview.test" -region [eu-west-1/us-east-1/etc]
 #
 # PREREQUISITES
 #
@@ -11,7 +11,8 @@
 # Process optional command line arguments
 param (
    [string]$value = 1,
-   [string]$namespace = "com.ft.editorial.cms.printpreview.test"
+   [string]$namespace = "com.ft.editorial.cms.printpreview.test",
+   [string]$region = "eu-west-1"
 )
 
 # IMPORT AWS POWERSHELL MODULE AND CREDENTIALS
@@ -26,16 +27,17 @@ catch {
 }
 
 
-function putMetricData ($input) {
+function putMetricData () {
   # http://docs.aws.amazon.com/powershell/latest/reference/Index.html
   # Write-CWMetricData -Namespace <String> -MetricData <MetricDatum[]> -PassThru <SwitchParameter> -Force <SwitchParameter>
   $dat = New-Object Amazon.CloudWatch.Model.MetricDatum
   $dat.Timestamp = (Get-Date).ToUniversalTime()
   $dat.Unit = "Count"
   $dat.MetricName = "methode-prime-running-on-$env:computername"
-  $dat.Value = $input
+  $dat.Value = $value
+  Set-DefaultAWSRegion -Region "$region"
   Write-CWMetricData -Namespace $namespace -MetricData $dat
-  Write-Host "Sent value $input to namespace $namespace"
+  Write-Host "Sent value $value to namespace $namespace"
 }
 
-putMetricData $value
+putMetricData
