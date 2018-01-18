@@ -35,7 +35,7 @@ Parameters:
   ImageId:
     Description: ftapp001-wvir-uk-t-20180105
     Type: String
-    Default: ami-8fc056f6
+    Default: ami-4aa03833
   InstanceKey:
     Description: EC2User Key
     Type: AWS::EC2::KeyPair::KeyName
